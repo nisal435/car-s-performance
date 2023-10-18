@@ -1,0 +1,8 @@
+ggplot(car, aes(x = Year_from, y = `CO2_emissions_g/km`, group = engine_type)) +
+  geom_point(aes(color = engine_type)) +
+  xlim(1985, 2025) +
+  geom_smooth(method = "lm", SE = FALSE, aes(color = engine_type)) +
+  ggtitle("CO2 emissions over years by engine type") +
+  ylim(0, 450) +
+  xlab("Year") +
+  ylab("CO2 emissions")

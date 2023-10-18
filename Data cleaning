@@ -1,0 +1,19 @@
+na_perc <- function(x) {
+  a <- round(sum(is.na(x)) / length(x) * 100)
+  a <- as.numeric(a)
+}
+
+# Apply na_perc function to each column in the dataset
+na <- sapply(car, na_perc)
+
+# Create a data frame with NA percentages
+na_df <- data.frame(variable = names(na), na_percentage = na)
+
+# Identify variables with more than 70% NA
+variables_to_delete <- na_df$variable[na_df$na_percentage >= 70]
+
+# Print variables to delete
+print(variables_to_delete)
+
+# Remove columns with more than 70% NA from the 'car' dataset
+car <- car[, !names(car) %in% variables_to_delete]

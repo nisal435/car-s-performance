@@ -1,0 +1,143 @@
+# Load necessary libraries
+library(gridExtra)  # For arranging multiple plots
+library(ggplot2)    # For creating interactive plots
+library(huxtable)   # For rendering nice tables
+library(readr)      # For reading CSV files
+
+# Load dataset from a CSV file
+Car_Dataset_1945_2020 <- read_csv("/Users/nisalgunawardhana/Desktop/Car Dataset 1945-2020.csv")
+car <- Car_Dataset_1945_2020
+
+# Function to calculate percentage of missing values in a column
+na_perc <- function(x) {
+  a <- round(sum(is.na(x)) / length(x) * 100)
+  a <- as.numeric(a)
+}
+
+# Apply na_perc function to each column in the dataset
+na <- sapply(car, na_perc)
+
+# Create a data frame with NA percentages
+na_df <- data.frame(variable = names(na), na_percentage = na)
+
+# Identify variables with more than 70% NA
+variables_to_delete <- na_df$variable[na_df$na_percentage >= 70]
+
+# Print variables to delete
+print(variables_to_delete)
+
+# Remove columns with more than 70% NA from the 'car' dataset
+car <- car[, !names(car) %in% variables_to_delete]
+
+# Data visualization: City fuel, Highway fuel, and CO2 emissions trends
+a <- ggplot(data = car, aes(x = Year_from, y = city_fuel_per_100km_l)) +
+  # Scatter plot for city fuel consumption
+  geom_point(color = "steelblue") +
+  xlim(1950, 2025) +
+  # Linear regression line
+  geom_smooth(method = "lm", color = "red") +
+  ggtitle("City fuel per 100 km") +
+  xlab("Time") +
+  ylab("")
+
+# Similar plots for highway fuel and CO2 emissions
+b <- ggplot(data = car, aes(x = Year_from, y = highway_fuel_per_100km_l)) +
+  geom_point(color = "steelblue") +
+  xlim(1950, 2025) +
+  geom_smooth(method = "lm", color = "red") +
+  ggtitle("Highway fuel per 100 km") +
+  xlab("Time") +
+  ylab("")
+
+c <- ggplot(data = car, aes(x = Year_from, y = `CO2_emissions_g/km`)) +
+  geom_point(color = "steelblue") +
+  xlim(1950, 2025) +
+  geom_smooth(method = "lm", color = "red") +
+  ggtitle("CO2 emissions per km") +
+  xlab("Time") +
+  ylab("")
+
+# Arrange the plots in a grid
+grid.arrange(a, b, c)
+
+# Clean duplicate names in the 'engine_type' column
+car$engine_type <- gsub("Hybrid", "hybrid", car$engine_type)
+car$engine_type <- gsub("Petrol", "petrol", car$engine_type)
+car$engine_type <- gsub("Diesel", "diesel", car$engine_type)
+
+# Data visualization: CO2 emissions over years by engine type
+ggplot(car, aes(x = Year_from, y = `CO2_emissions_g/km`, group = engine_type)) +
+  geom_point(aes(color = engine_type)) +
+  xlim(1985, 2025) +
+  geom_smooth(method = "lm", SE = FALSE, aes(color = engine_type)) +
+  ggtitle("CO2 emissions over years by engine type") +
+  ylim(0, 450) +
+  xlab("Year") +
+  ylab("CO2 emissions")
+
+# Data visualization: Maximum speed trends by engine type
+ggplot(data = car, aes(x = Year_from, y = max_speed_km_per_h, group = engine_type)) +
+  geom_point(aes(color = engine_type)) +
+  xlim(1950, 2025) +
+  geom_smooth(method = "lm", aes(color = engine_type), se = FALSE)
+
+# Data visualization: Acceleration trends by engine type
+ggplot(data = car, aes(x = Year_from, y = `acceleration_0_100_km/h_s`, group = engine_type)) +
+  geom_point(aes(color = engine_type)) +
+  xlim(1950, 2025) +
+  geom_smooth(method = "lm", aes(color = engine_type))
+
+# Data visualization: Evolution of car dimensions over time
+p1 <- ggplot(data = car, aes(y = length_mm, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Length Evolution") +
+  xlab("Time") +
+  ylab("Length")
+
+p2 <- ggplot(data = car, aes(y = width_mm, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Width Evolution") +
+  xlab("Time") +
+  ylab("Width") +
+  ylim(1000, 2500)
+
+p3 <- ggplot(data = car, aes(y = height_mm, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Height Evolution") +
+  xlab("Time") +
+  ylab("Height") +
+  ylim(500, 3000)
+
+p4 <- ggplot(data = car, aes(y = wheelbase_mm, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Wheelbase Evolution") +
+  xlab("Time") +
+  ylab("Wheelbase") +
+  ylim(0, 5000)
+
+p5 <- ggplot(data = car, aes(y = full_weight_kg, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Weight Evolution") +
+  xlab("Time") +
+  ylab("Weight")
+
+# Arrange height and wheelbase plots in a 2-column grid
+grid.arrange(p3, p4, ncol = 2)
+
+# Plot weight evolution separately
+grid.arrange(p5)
+
+# Linear regression models for dimensions and weight evolution
+le <- lm(data = car, length_mm ~ Year_from)
+wi <- lm(data = car, width_mm ~ Year_from)
+he <- lm(data = car, height_mm ~ Year_from)
+wh <- lm(data = car, wheelbase_mm ~ Year_from)
+we <- lm(data = car, full_weight_kg ~ Year_from)
+
+# Display regression results using huxtable
+huxreg("Length" = le, "Width" =

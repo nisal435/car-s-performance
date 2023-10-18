@@ -1,0 +1,51 @@
+a<-ggplot(data=car,aes(x=Year_from, y=city_fuel_per_100km_l ))+
+  geom_point(color= "steelblue")+
+  xlim(1950,2025)+
+  geom_smooth(method="lm",color="red")+
+  ggtitle("City fuel per 100 km")+
+  xlab("Time")+
+  ylab("")
+
+b<-ggplot(data=car,aes(x=Year_from, y=highway_fuel_per_100km_l ))+
+  geom_point(color= "steelblue")+
+  xlim(1950,2025)+
+  geom_smooth(method="lm",color="red")+
+  ggtitle("Highway fuel per 100 km")+
+  xlab("Time")+
+  ylab("")
+
+c<-ggplot(data=car,aes(x=Year_from, y=`CO2_emissions_g/km` ))+
+  geom_point(color= "steelblue")+
+  xlim(1950,2025)+
+  geom_smooth(method="lm",color="red")+
+  ggtitle("Co2 emission per km")+
+  xlab("Time")+
+  ylab("")
+
+grid.arrange(a,b,c)
+
+
+explanation of above code:
+
+Plot 'a':
+Data: x-axis represents 'Year_from', y-axis represents 'city_fuel_per_100km_l'.
+Geometries: Points (in steel blue) for data points and a linear regression line (in red).
+Labels: Plot title is "City fuel per 100 km," x-axis label is "Time," and y-axis has no label.
+
+Plot 'b':
+Data: x-axis represents 'Year_from', y-axis represents 'highway_fuel_per_100km_l'.
+Geometries: Points (in steel blue) for data points and a linear regression line (in red).
+Labels: Plot title is "Highway fuel per 100 km," x-axis label is "Time," and y-axis has no label.
+
+Plot 'c':
+Data: x-axis represents 'Year_from', y-axis represents 'CO2_emissions_g/km'.
+Geometries: Points (in steel blue) for data points and a linear regression line (in red).
+Labels: Plot title is "CO2 emission per km," x-axis label is "Time," and y-axis has no label.
+The grid.arrange(a, b, c) function arranges these three plots into a grid for easy comparison and visualization.
+
+
+
+
+
+
+

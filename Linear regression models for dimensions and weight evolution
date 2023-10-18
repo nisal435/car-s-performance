@@ -1,0 +1,5 @@
+le <- lm(data = car, length_mm ~ Year_from)
+wi <- lm(data = car, width_mm ~ Year_from)
+he <- lm(data = car, height_mm ~ Year_from)
+wh <- lm(data = car, wheelbase_mm ~ Year_from)
+we <- lm(data = car, full_weight_kg ~ Year_from)

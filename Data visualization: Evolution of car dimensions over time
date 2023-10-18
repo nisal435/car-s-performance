@@ -1,0 +1,37 @@
+p1 <- ggplot(data = car, aes(y = length_mm, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Length Evolution") +
+  xlab("Time") +
+  ylab("Length")
+
+p2 <- ggplot(data = car, aes(y = width_mm, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Width Evolution") +
+  xlab("Time") +
+  ylab("Width") +
+  ylim(1000, 2500)
+
+p3 <- ggplot(data = car, aes(y = height_mm, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Height Evolution") +
+  xlab("Time") +
+  ylab("Height") +
+  ylim(500, 3000)
+
+p4 <- ggplot(data = car, aes(y = wheelbase_mm, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Wheelbase Evolution") +
+  xlab("Time") +
+  ylab("Wheelbase") +
+  ylim(0, 5000)
+
+p5 <- ggplot(data = car, aes(y = full_weight_kg, x = Year_from)) +
+  geom_point(alpha = 0.55, color = "steelblue") +
+  geom_smooth(method = 'lm', color = "red") +
+  ggtitle("Weight Evolution") +
+  xlab("Time") +
+  ylab("Weight")

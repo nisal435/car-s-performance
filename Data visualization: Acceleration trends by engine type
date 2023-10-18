@@ -1,0 +1,4 @@
+ggplot(data = car, aes(x = Year_from, y = `acceleration_0_100_km/h_s`, group = engine_type)) +
+  geom_point(aes(color = engine_type)) +
+  xlim(1950, 2025) +
+  geom_smooth(method = "lm", aes(color = engine_type))

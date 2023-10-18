@@ -1,0 +1,3 @@
+car$engine_type <- gsub("Hybrid", "hybrid", car$engine_type)
+car$engine_type <- gsub("Petrol", "petrol", car$engine_type)
+car$engine_type <- gsub("Diesel", "diesel", car$engine_type)
